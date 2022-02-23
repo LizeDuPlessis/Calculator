@@ -129,6 +129,16 @@ function evaluate({ currentOperand, previousOperand, operation }) {
   return computation.toString();
 }
 
+//adding decimal place in long number
+const INTEGER_FORMATTER = new Intl.NumberFormat("en-us", {
+  maximumFractionDigits: 0,
+});
+function formatOperand(operand) {
+  if (operand == null) return;
+  const [integer, decimal] = operand.split(".");
+  if (decimal == null) return INTEGER_FORMATTER.format(integer);
+}
+
 function App() {
   const [{ currentOperand, previousOperand, operation }, dispatch] = useReducer(
     reducer,
@@ -140,10 +150,10 @@ function App() {
     <div className="calculator-grid">
       <div className="output">
         <div className="previous-operand">
-          {previousOperand}
+          {formatOperand(previousOperand)}
           {operation}
         </div>
-        <div className="current-operand">{currentOperand}</div>
+        <div className="current-operand">{formatOperand(currentOperand)}</div>
       </div>
       <button
         onClick={() => {
